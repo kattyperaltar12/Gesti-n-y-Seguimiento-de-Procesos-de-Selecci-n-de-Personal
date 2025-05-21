@@ -111,3 +111,8 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 - Puntaje promedio por etapa  
 - Tasa de descalificación por etapa  
 - Participación femenina o por grupos etarios
+
+## ✅ Modelo E/R lógico
+![MODELO](https://github.com/user-attachments/assets/ab667583-1dde-408c-923a-99f222a97d42)
+
+
