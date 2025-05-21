@@ -42,7 +42,17 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 - nivel_remunerativo  
 🔗 1:N con `Postulacion`
 
-### 🟦 3. Postulante (versión mejorada)
+### 🟦 3. Responsable
+- `id_proceso` (PK)  
+- `DNI_resposale`
+- nombre
+- apellidos
+- cargo
+- correo
+- fecha asignacion
+🔗 1:N con `PocesoSeleccion`
+
+### 🟦 4. Postulante (versión mejorada)
 - `dni` (PK)  
 - nombres  
 - apellidos  
@@ -58,7 +68,7 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 - condicion_especial (opcional: discapacidad, reasignado, etc.)
 🔗 1:N con `Postulacion`
 
-### 🟦 4. Postulacion
+### 🟦 5. Postulacion
 - `id_postulacion` (PK)  
 - `id_puesto` (FK)  
 - `dni` (FK)  
@@ -67,7 +77,7 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 🔗 1:N con `EvaluacionEtapa`  
 🔗 1:1 con `ResultadoFinal` (opcional)
 
-### 🟦 5. EvaluacionEtapa
+### 🟦 6. EvaluacionEtapa
 - `id_evaluacion` (PK)  
 - `id_postulacion` (FK)  
 - etapa (CV, técnica, entrevista, psicológica, etc.)  
@@ -75,7 +85,7 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 - observaciones  
 - fecha  
 
-### 🟦 6. ResultadoFinal
+### 🟦 7. ResultadoFinal
 - `id_postulacion` (PK/FK)  
 - puntaje_total  
 - orden_merito  
@@ -112,7 +122,15 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 - Tasa de descalificación por etapa  
 - Participación femenina o por grupos etarios
 
+---
+
 ## ✅ Modelo E/R lógico
-![MODELO](https://github.com/user-attachments/assets/ab667583-1dde-408c-923a-99f222a97d42)
+![image](https://github.com/user-attachments/assets/1dc131d2-3615-460d-b181-fc8a47dd36f5)
+
+## ✅ BD designer
+![image](https://github.com/user-attachments/assets/dc38ca00-8860-4fdd-8a10-edc14bc97f54)
+
+
+
 
 
