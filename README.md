@@ -128,7 +128,7 @@ Actualmente, estos procesos se gestionan de manera descentralizada, dificultando
 ![image](https://github.com/user-attachments/assets/1dc131d2-3615-460d-b181-fc8a47dd36f5)
 
 ## ✅ BD designer
-![image](https://github.com/user-attachments/assets/dc38ca00-8860-4fdd-8a10-edc14bc97f54)
+![image](https://github.com/user-attachments/assets/6bd59786-6d3b-40fa-b059-9073aeb9cb45)
 
 ## ✅ Modelo físico
 ![image](https://github.com/user-attachments/assets/cd2d4a7f-feac-49e4-8c6d-6f59e47e428f)
