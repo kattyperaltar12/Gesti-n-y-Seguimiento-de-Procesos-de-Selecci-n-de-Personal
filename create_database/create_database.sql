@@ -1,7 +1,7 @@
-CREATE DATABASE Seguimiento_SelecciondePersonal
+CREATE DATABASE Seguimiento_Seleccion_de_Personal
 GO
 
-USE Seguimiento_SelecciondePersonal;
+USE Seguimiento_Seleccion_de_Personal;
 GO
 
 
@@ -64,13 +64,13 @@ CREATE TABLE Postulante (
 CREATE TABLE Postulacion (
     id INTEGER PRIMARY KEY,
     id_puesto INTEGER,
-    id_postulante INTEGER,  -- <-- NUEVO
+    id_postulante INTEGER, 
     fecha_postulacion DATE,
     estado_postulacion VARCHAR(50),
     CONSTRAINT fk_postulacion_puesto
         FOREIGN KEY (id_puesto) REFERENCES PuestoConvocado(id),
     CONSTRAINT fk_postulacion_postulante
-        FOREIGN KEY (id_postulante) REFERENCES Postulante(id) -- <-- CLAVE PRIMARIA AHORA
+        FOREIGN KEY (id_postulante) REFERENCES Postulante(id) 
 );
 
 -- Tabla: EvaluacionEtapa
@@ -95,43 +95,3 @@ CREATE TABLE ResultadoFinal (
     CONSTRAINT fk_resultado_postulacion
         FOREIGN KEY (id_postulacion) REFERENCES Postulacion(id)
 );
-
-CREATE TABLE Postulacion (
-    id INTEGER PRIMARY KEY,
-    id_puesto INTEGER,
-    id_postulante INTEGER,  -- <-- NUEVO
-    fecha_postulacion DATE,
-    estado_postulacion VARCHAR(50),
-    CONSTRAINT fk_postulacion_puesto
-        FOREIGN KEY (id_puesto) REFERENCES PuestoConvocado(id),
-    CONSTRAINT fk_postulacion_postulante
-        FOREIGN KEY (id_postulante) REFERENCES Postulante(id) -- <-- CLAVE PRIMARIA AHORA
-);
-
-DROP TABLE Postulacion;
-ALTER TABLE ResultadoFinal
-DROP CONSTRAINT fk_resultado_postulacion;
-
-ALTER TABLE EvaluacionEtapa
-DROP CONSTRAINT fk_evaluacion_postulacion;
-DROP TABLE Postulacion;
-DROP TABLE IF EXISTS Postulacion;
-CREATE TABLE Postulacion (
-    id INTEGER PRIMARY KEY,
-    id_puesto INTEGER,
-    id_postulante INTEGER,  -- correcion
-    fecha_postulacion DATE,
-    estado_postulacion VARCHAR(50),
-    CONSTRAINT fk_postulacion_puesto
-        FOREIGN KEY (id_puesto) REFERENCES PuestoConvocado(id),
-    CONSTRAINT fk_postulacion_postulante
-        FOREIGN KEY (id_postulante) REFERENCES Postulante(id)
-);
-
-ALTER TABLE ResultadoFinal
-ADD CONSTRAINT fk_resultado_postulacion
-FOREIGN KEY (id_postulacion) REFERENCES Postulacion(id);
-
-ALTER TABLE EvaluacionEtapa
-ADD CONSTRAINT fk_evaluacion_postulacion
-FOREIGN KEY (id_postulacion) REFERENCES Postulacion(id);
