@@ -119,7 +119,7 @@ DROP TABLE IF EXISTS Postulacion;
 CREATE TABLE Postulacion (
     id INTEGER PRIMARY KEY,
     id_puesto INTEGER,
-    id_postulante INTEGER,  -- clave foránea correcta
+    id_postulante INTEGER,  -- correcion
     fecha_postulacion DATE,
     estado_postulacion VARCHAR(50),
     CONSTRAINT fk_postulacion_puesto
