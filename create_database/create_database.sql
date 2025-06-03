@@ -18,7 +18,8 @@ CREATE TABLE ProcesoSeleccion (
 CREATE TABLE Responsable (
     id INT PRIMARY KEY IDENTITY(1,1),
     id_proceso INT,
-    DNI_responsable VARCHAR(20),
+    DNI_responsable VARCHAR(8) UNIQUE NOT NULL 
+        CHECK (LEN(DNI_responsable) = 8 AND DNI_responsable NOT LIKE '%[^0-9]%'),
     nombres VARCHAR(100),
     apellidos VARCHAR(100),
     cargo VARCHAR(100),
@@ -44,7 +45,8 @@ CREATE TABLE PuestoConvocado (
 -- Tabla: Postulante
 CREATE TABLE Postulante (
     id INT PRIMARY KEY IDENTITY(1,1),
-    DNI VARCHAR(20) UNIQUE NOT NULL,
+    DNI VARCHAR(8) UNIQUE NOT NULL 
+        CHECK (LEN(DNI) = 8 AND DNI NOT LIKE '%[^0-9]%'),
     nombres VARCHAR(100),
     apellidos VARCHAR(100),
     correo VARCHAR(100),
@@ -72,12 +74,12 @@ CREATE TABLE Postulacion (
         FOREIGN KEY (id_postulante) REFERENCES Postulante(id)
 );
 
+
 -- Tabla: EvaluacionEtapa
 CREATE TABLE EvaluacionEtapa (
     id INT PRIMARY KEY IDENTITY(1,1),
     id_postulacion INT,
     etapa VARCHAR(50),
-    puntaje DECIMAL(5,2),
     observaciones TEXT,
     fecha DATE,
     CONSTRAINT fk_evaluacion_postulacion
