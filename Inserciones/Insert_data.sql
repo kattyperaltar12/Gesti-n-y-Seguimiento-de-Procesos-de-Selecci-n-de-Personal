@@ -1,6 +1,113 @@
 USE Seguimiento_Seleccion_de_Personal;
 GO
 
+-----ANEXOS: INFORME FINAL
+
+----RRHH necesita saber la cantidad de postulantes por profesión:
+SELECT profesion, COUNT(*) AS cantidad_postulantes
+FROM Postulante
+GROUP BY profesion
+ORDER BY cantidad_postulantes DESC;
+
+----La Gerencia General quiere visualizar solo las convocatorias vigentes
+CREATE VIEW Vista_Convocatorias_Vigentes AS
+SELECT *
+FROM ProcesoSeleccion
+WHERE estado = 'En proceso';
+
+---Los evaluadores desean conocer los puestos con mayor cantidad de postulaciones canceladas
+SELECT PC.nombre_puesto, COUNT(*) AS total_canceladas
+FROM Postulacion PO
+JOIN PuestoConvocado PC ON PO.id_puesto = PC.id
+WHERE PO.estado_postulacion = 'Cancelado'
+GROUP BY PC.nombre_puesto;
+
+---Se desea calcular la edad de los postulantes para segmentarlos por edad
+CREATE FUNCTION fn_EdadPostulante (@fecha_nacimiento DATE)
+RETURNS INT
+AS
+BEGIN
+    RETURN DATEDIFF(YEAR, @fecha_nacimiento, GETDATE());
+END;
+
+SELECT DNI, nombres, apellidos, 
+       fecha_nacimiento,
+       dbo.fn_EdadPostulante(fecha_nacimiento) AS edad
+FROM Postulante;
+
+---
+
+SELECT 
+  CASE 
+    WHEN edad BETWEEN 18 AND 27 THEN '18 - 27'
+    WHEN edad BETWEEN 28 AND 37 THEN '28 - 37'
+    WHEN edad BETWEEN 38 AND 47 THEN '38 - 47'
+    WHEN edad BETWEEN 48 AND 57 THEN '48 - 57'
+    WHEN edad >= 58 THEN '58 o más'
+    ELSE 'Sin edad válida'
+  END AS rango_edad,
+  COUNT(*) AS cantidad_postulantes
+FROM (
+  SELECT dbo.fn_EdadPostulante(fecha_nacimiento) AS edad
+  FROM Postulante
+) AS subconsulta
+GROUP BY 
+  CASE 
+    WHEN edad BETWEEN 18 AND 27 THEN '18 - 27'
+    WHEN edad BETWEEN 28 AND 37 THEN '28 - 37'
+    WHEN edad BETWEEN 38 AND 47 THEN '38 - 47'
+    WHEN edad BETWEEN 48 AND 57 THEN '48 - 57'
+    WHEN edad >= 58 THEN '58 o más'
+    ELSE 'Sin edad válida'
+  END
+ORDER BY rango_edad;
+
+---Revisión de los postulantes mejor calificados
+SELECT TOP 10 P.nombres, P.apellidos, RF.puntaje_total
+FROM ResultadoFinal RF
+JOIN Postulacion PO ON RF.id_postulacion = PO.id
+JOIN Postulante P ON PO.id_postulante = P.id
+ORDER BY RF.puntaje_total DESC;
+
+
+----Detectar los puestos con mayor necesidad de personal
+CREATE VIEW Vista_Puestos_MasVacantes AS
+SELECT nombre_puesto, cantidad_vacantes, unidad
+FROM PuestoConvocado
+WHERE cantidad_vacantes > 2;
+
+---Reporte de ganadores por convocatoria
+CREATE PROCEDURE sp_ListarGanadoresPorProceso
+  @id_proceso INT
+AS
+BEGIN
+    SELECT P.nombres, P.apellidos, PC.nombre_puesto, RF.estado_final
+    FROM ResultadoFinal RF
+    JOIN Postulacion PO ON RF.id_postulacion = PO.id
+    JOIN Postulante P ON PO.id_postulante = P.id
+    JOIN PuestoConvocado PC ON PO.id_puesto = PC.id
+    WHERE RF.estado_final = 'Ganador'
+      AND PC.id_proceso = @id_proceso;
+END;
+EXEC sp_ListarGanadoresPorProceso @id_proceso = 6;
+
+----Distribución por Sexo y Profesión
+SELECT profesion, sexo, COUNT(*) AS total
+FROM Postulante
+GROUP BY profesion, sexo
+ORDER BY profesion, sexo;
+
+---Promedio de edad por profesión y sexo
+SELECT profesion, sexo, 
+       AVG(dbo.fn_EdadPostulante(fecha_nacimiento)) AS edad_promedio
+FROM Postulante
+GROUP BY profesion, sexo
+ORDER BY profesion, sexo;
+
+
+
+
+
 ----Insercion de datos
 
 SELECT COUNT(*) AS total_procesos
